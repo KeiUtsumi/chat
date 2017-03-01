@@ -27,7 +27,13 @@ server.listen(port, function() {
 const io = socketio.listen(server);
 io.sockets.on('connection', function(socket) {
   socket.on('message', function(data) {
-    console.log(data.value);
-    io.sockets.emit('from_server', {value: data.value});
+    var loginMessage = data.value + "ID :" + socket.id;
+    console.log(loginMessage);
+    io.sockets.emit('from_server', {value: loginMessage});
+  });
+  socket.on('comment', function(data) {
+    var commentMessage = "ID :" + socket.id + ":" + data.value;
+    console.log(commentMessage);
+    socket.broadcast.emit('from_server', {value: commentMessage});
   });
 });
