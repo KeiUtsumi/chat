@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/KeiUtsumi/chat/issues"
   },
-  "homepage": "https://github.com/KeiUtsumi/chat#readme"
+  "homepage": "https://github.com/KeiUtsumi/chat#readme",
+  "dependencies": {
+    "socket.io": "^1.7.3"
+  }
 }
