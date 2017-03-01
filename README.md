@@ -6,6 +6,6 @@
 * URLをコピってgit clone URL
 * cd .\フォルダ名\で移動
 * README.mdをつくる
-* そいつをadd
-* でcommit
+* そいつをadd(git add -A)
+* でcommit(git commit -m "コミット名")
 * 最後にpush
