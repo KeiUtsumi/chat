@@ -5,7 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chat</title>
+  <script src="/socket.io/socket.io.js">
+  </script>
 </head>
 <body>
+  <h1>こ↑こ↓</h1>
+  <div class="message">
+    <p>入って、どうぞ</p>
+  </div>
+  <form>
+    <input type="text" name="textArea" value="abc">
+    <input type="button" id="sendBtn" value="Send_Message" onclick="send(this.form)">
+  </form>
+  直前に送信したメッセージ
+  <div id="JustBeforeMassege"></div>
+  入室者情報
+  <div id="member"></div>
+  メッセージログ
+  <div id="massegeBoard"></div>
+  <script>
+    /*var socket = io.connect();
+    socket.emit('message', {value: 'だれか'});
+    socket.on('from_server', function(data) {
+      console.log(data.value);
+    });*/
+
+    function send(form) {
+      var str = form.textArea.value;
+      document.getElementById("massegeBoard").innerHTML
+      = document.getElementById("massegeBoard").innerHTML + str + "<br>";
+
+      var socket = io.connect();
+      socket.emit('message', {value: str});
+      socket.on('from_server', function(data) {
+        console.log(data.value);
+      });
+    }
+  </script>
 </body>
 </html>
