@@ -6,10 +6,10 @@ const socketio = require('socket.io');
 const port = 3000;
 
 server.on('request', function(req, res) {
-  fs.readFile('./client/index.html', 'utf8', function(err, data) {
+  fs.readFile('./client/index.html', 'utf8', function(err, data) {//ここのファイル読ませる
     if (err) {
       res.writeHead(404, {'Content-Type': 'text/plane'})
-      res.write('page not found!');
+      res.write('page not found!');//そのURLに読みたいファイル無いぞ
       return res.end();
     }
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -20,7 +20,7 @@ server.on('request', function(req, res) {
 
 server.listen(port, function() {
   console.log('server running on port', port);
-})
+});
 
 
 

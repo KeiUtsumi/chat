@@ -17,11 +17,11 @@
     <input type="text" id="textArea" value="abc">
     <input type="button" id="sendBtn" value="Send_Message" onclick="send()">
   </form>
-  直前に送信したメッセージ
+  <h2>直前に送信したメッセージ</h2>
   <div id="JustBeforeMassege"></div>
-  入室者情報
+  <h2>入室者情報</h2>
   <div id="member"></div>
-  メッセージログ
+  <h2>メッセージログ</h2>
   <div id="massegeBoard"></div>
   <script>
   var socket = io.connect();
@@ -31,16 +31,16 @@
     = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
   });
 
-    function send() {
-      var myComment = document.getElementById("textArea").value;
+  function send() {
+    var myComment = document.getElementById("textArea").value;
+    document.getElementById("massegeBoard").innerHTML
+    = document.getElementById("massegeBoard").innerHTML + "me :" + myComment + "<br>";
+    socket.emit('comment', {value: myComment});
+    socket.on('from_server', function(data) {
       document.getElementById("massegeBoard").innerHTML
-      = document.getElementById("massegeBoard").innerHTML + "me :" + myComment + "<br>";
-      socket.emit('comment', {value: myComment});
-      socket.on('from_server', function(data) {
-        document.getElementById("massegeBoard").innerHTML
-        = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
-      });
-    }
+      = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
+    });
+  }
   </script>
 </body>
 </html>
