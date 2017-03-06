@@ -5,41 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chat</title>
-  <script src="/socket.io/socket.io.js">
-  </script>
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-  <h1>こ↑こ↓</h1>
+  <h1>ここ</h1>
   <div class="message">
-    <p>入って、どうぞ</p>
+    <p>どうぞ</p>
   </div>
   <form>
-    <input type="text" id="textArea" value="abc">
-    <input type="button" id="sendBtn" value="Send_Message" onclick="send()">
+    <input type="text" id="textArea" placeholder="user_name">
+    <input type="button" id="btn" value="Login" onclick="send()">
   </form>
   <h2>直前に送信したメッセージ</h2>
-  <div id="JustBeforeMassege"></div>
+  <div id="JustBeforeMassege">あくしろよ</div>
   <h2>入室者情報</h2>
   <div id="member"></div>
   <h2>メッセージログ</h2>
   <div id="massegeBoard"></div>
   <script>
+  var loginStatus = false;
   var socket = io.connect();
-  socket.emit('message', {value: 'Login_user'});
-  socket.on('from_server', function(data) {
+  socket.emit('inMessage', {value: 'connect'});
+  socket.on('from_server_id', function(data) {
+    document.getElementById("massegeBoard").innerHTML
+    = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
+  });
+  socket.on('from_server_login', function(data) {
+    document.getElementById("massegeBoard").innerHTML
+    = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
+    document.getElementById("member").innerHTML
+    = document.getElementById("member").innerHTML + data.value + "<br>";
+  });
+  socket.on('from_server_comment', function(data) {
     document.getElementById("massegeBoard").innerHTML
     = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
   });
 
   function send() {
-    var myComment = document.getElementById("textArea").value;
-    document.getElementById("massegeBoard").innerHTML
-    = document.getElementById("massegeBoard").innerHTML + "me :" + myComment + "<br>";
-    socket.emit('comment', {value: myComment});
-    socket.on('from_server', function(data) {
-      document.getElementById("massegeBoard").innerHTML
-      = document.getElementById("massegeBoard").innerHTML + data.value + "<br>";
-    });
+    if (!loginStatus) {
+      var name = document.getElementById("textArea").value;
+      socket.emit('login', {value: name});
+      if (true) {
+        loginStatus = !loginStatus;
+        document.getElementById("textArea").placeholder = "comment";
+        document.getElementById("btn").value = "send_comment";
+        document.getElementById("textArea").value = "";
+      }
+    } else {
+      var myComment = document.getElementById("textArea").value;
+      document.getElementById("textArea").value = "";
+      document.getElementById("JustBeforeMassege").innerHTML = myComment;
+      /*document.getElementById("massegeBoard").innerHTML
+      = document.getElementById("massegeBoard").innerHTML + "me : " + myComment + "<br>";*/
+      socket.emit('comment', {value: myComment});
+    }
   }
   </script>
 </body>
